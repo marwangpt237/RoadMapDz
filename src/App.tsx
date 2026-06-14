@@ -12,13 +12,6 @@ import {
   BookOpen,
   ArrowLeft,
   ArrowRight,
-  Sparkles,
-  ChevronRight,
-  ChevronDown,
-  Terminal,
-  Code2,
-  ExternalLink,
-  Info,
   Mouse
 } from 'lucide-react';
 
@@ -60,7 +53,6 @@ function AppContent() {
   const { lang, t } = useApp();
   const { currentRoute, navigate } = useSimpleRouter();
   const [selectedNode, setSelectedNode] = useState<RoadmapNodeData | null>(null);
-  const [showDevNotice, setShowDevNotice] = useState(false);
 
   // Derive active roadmapId (e.g., matching "/full-stack" -> "full-stack")
   const roadmapId = currentRoute !== '/' ? currentRoute.replace('/', '') : null;
@@ -131,86 +123,6 @@ function AppContent() {
             </div>
           </div>
 
-          {/* COMPANION AlgDevs Change Integration Notice Accordion (Section 7) */}
-          <div className="border border-zinc-200 dark:border-zinc-805 bg-white dark:bg-zinc-900/60 p-5 rounded-2xl shadow-xs" id="dev-notice-section">
-            <button
-              onClick={() => setShowDevNotice(!showDevNotice)}
-              className="flex items-center justify-between w-full text-left font-sans transition-colors cursor-pointer group"
-              id="dev-notice-toggle"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-orange-50 dark:bg-orange-950/20 text-orange-500">
-                  <Terminal className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-sm text-zinc-800 dark:text-zinc-100 group-hover:text-rose-500 transition-colors">
-                    {t('Companion AlgDevs Change Details (Section 7)', 'تفاصيل تحديث منصة AlgDevs المرافقة (القسم 7)')}
-                  </h3>
-                  <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">
-                    {t('Isolated companion integration instructions for your other repository', 'تعليمات الربط المتكاملة والمستقلة لمستودعك البرمجي الآخر')}
-                  </p>
-                </div>
-              </div>
-              <div>
-                {showDevNotice ? (
-                  <ChevronDown className="w-5 h-5 text-zinc-400 dark:text-zinc-600 rotate-180 transition-transform" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-zinc-400 dark:text-zinc-600 transition-transform" />
-                )}
-              </div>
-            </button>
-
-            {showDevNotice && (
-              <div className="mt-5 pt-4 border-t border-zinc-100 dark:border-zinc-850 text-xs space-y-4 leading-relaxed animate-slide-down">
-                <div className="flex items-start gap-2.5 p-3.5 bg-rose-500/5 rounded-xl text-rose-700 dark:text-rose-350 border border-rose-500/10">
-                  <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <p>
-                    {t(
-                      'For the "View on AlgDevs" buttons to operate seamlessly, the external AlgDevs application needs to detect the query parameter from the URL on load and execute it as the initial search term.',
-                      'لكي يقوم زر "تصفح الموارد في AlgDevs" بالبحث الفوري، يجب على تطبيق AlgDevs قراءة معلمة الاستعلام q عند الإقلاع وتعيينها كقيمة أولية لشريط البحث.'
-                    )}
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="font-mono text-[11px] uppercase tracking-wider text-rose-500 font-bold">
-                    {t('Apply this diff to AlgDevs search component mount handler:', 'أضف هذا التغيير البسيط في معالج إقلاع شريط البحث في تطبيق AlgDevs:')}
-                  </p>
-                  
-                  <div className="relative rounded-lg overflow-hidden bg-zinc-950 p-4 border border-zinc-850 text-[11px] font-mono leading-relaxed text-zinc-300">
-                    <pre className="overflow-x-auto">
-{`// 1. In your AlgDevs search page/component (e.g. SearchBar containing input state):
-useEffect(() => {
-  // Extract URL parameters on initial component mount:
-  const params = new URLSearchParams(window.location.search);
-  const queryParam = params.get('q');
-  
-  if (queryParam) {
-    // Set search state equivalent to user keyboard entry:
-    setSearchQuery(queryParam);
-    
-    // Optional: Log analytics match metric isolated from standard operations
-    console.log('[AlgDevs Partner Link] Loaded pre-filtered term:', queryParam);
-  }
-}, []);`}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 pt-1 text-zinc-400">
-                  <span className="flex items-center gap-1">
-                    <Code2 className="w-3.5 h-3.5 text-zinc-500" />
-                    <span>{t('Language: TypeScript/React', 'اللغة: React + TypeScript')}</span>
-                  </span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1 text-emerald-500">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>{t('Zero dependencies required', 'لا توجد حزم إضافية مطلوبة')}</span>
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
         </main>
       ) : matchedRoadmap ? (
         /* ================== ROADMAP DETAILED VIEW SCREEN ================== */
