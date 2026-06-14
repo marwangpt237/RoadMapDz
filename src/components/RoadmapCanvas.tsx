@@ -25,9 +25,35 @@ interface RoadmapCanvasProps {
   selectedNodeId?: string;
 }
 
+// Helper to resolve dagre safely across CJS/ESM and different bundlers
+const getDagreInstance = () => {
+  const rawMod = dagre as any;
+  if (!rawMod) return null;
+  if (rawMod.graphlib && rawMod.layout) {
+    return rawMod;
+  }
+  if (rawMod.default && rawMod.default.graphlib && rawMod.default.layout) {
+    return rawMod.default;
+  }
+  return rawMod;
+};
+
 // Dagre automatic system layout configurer
 const getLayoutedElements = (nodes: any[], edges: any[]) => {
-  const dagreGraph = new dagre.graphlib.Graph();
+  const dg = getDagreInstance();
+  if (!dg || !dg.graphlib) {
+    console.warn('[Roadmap] Dagre module failed to resolve graphlib at runtime. Using raw layout fallback.', dg);
+    // Simple vertical stack fallback to prevent blank/crash
+    const fallbackNodes = nodes.map((node, i) => ({
+      ...node,
+      targetPosition: Position.Top,
+      sourcePosition: Position.Bottom,
+      position: { x: 100, y: i * 150 + 50 },
+    }));
+    return { nodes: fallbackNodes, edges };
+  }
+
+  const dagreGraph = new dg.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   
   // Set TB layout (Top-to-Bottom) and node spacing parameters to look gorgeous
@@ -47,7 +73,7 @@ const getLayoutedElements = (nodes: any[], edges: any[]) => {
     dagreGraph.setEdge(edge.source, edge.target);
   });
 
-  dagre.layout(dagreGraph);
+  dg.layout(dagreGraph);
 
   const newNodes = nodes.map((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
@@ -57,8 +83,8 @@ const getLayoutedElements = (nodes: any[], edges: any[]) => {
       sourcePosition: Position.Bottom,
       // Center coordinates offset correcting
       position: {
-        x: nodeWithPosition.x - 110,
-        y: nodeWithPosition.y - 37.5,
+        x: nodeWithPosition ? nodeWithPosition.x - 110 : 0,
+        y: nodeWithPosition ? nodeWithPosition.y - 37.5 : 0,
       },
     };
   });
