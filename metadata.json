@@ -1,0 +1,6 @@
+{
+  "name": "Dev Roadmaps",
+  "description": "Bilingual visual roadmaps for developers with Arabic and English support, light and dark themes, and dynamic auto-layout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
