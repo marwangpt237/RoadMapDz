@@ -9,7 +9,7 @@ import {
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import dagre from '@dagrejs/dagre';
+import { graphlib, layout } from '@dagrejs/dagre';
 import { useApp } from '../context/AppContext';
 import { RoadmapDefinition, RoadmapNodeData } from '../data/types';
 import TopicNode from './TopicNode';
@@ -25,35 +25,9 @@ interface RoadmapCanvasProps {
   selectedNodeId?: string;
 }
 
-// Helper to resolve dagre safely across CJS/ESM and different bundlers
-const getDagreInstance = () => {
-  const rawMod = dagre as any;
-  if (!rawMod) return null;
-  if (rawMod.graphlib && rawMod.layout) {
-    return rawMod;
-  }
-  if (rawMod.default && rawMod.default.graphlib && rawMod.default.layout) {
-    return rawMod.default;
-  }
-  return rawMod;
-};
-
 // Dagre automatic system layout configurer
 const getLayoutedElements = (nodes: any[], edges: any[]) => {
-  const dg = getDagreInstance();
-  if (!dg || !dg.graphlib) {
-    console.warn('[Roadmap] Dagre module failed to resolve graphlib at runtime. Using raw layout fallback.', dg);
-    // Simple vertical stack fallback to prevent blank/crash
-    const fallbackNodes = nodes.map((node, i) => ({
-      ...node,
-      targetPosition: Position.Top,
-      sourcePosition: Position.Bottom,
-      position: { x: 100, y: i * 150 + 50 },
-    }));
-    return { nodes: fallbackNodes, edges };
-  }
-
-  const dagreGraph = new dg.graphlib.Graph();
+  const dagreGraph = new graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   
   // Set TB layout (Top-to-Bottom) and node spacing parameters to look gorgeous
@@ -73,7 +47,7 @@ const getLayoutedElements = (nodes: any[], edges: any[]) => {
     dagreGraph.setEdge(edge.source, edge.target);
   });
 
-  dg.layout(dagreGraph);
+  layout(dagreGraph);
 
   const newNodes = nodes.map((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
