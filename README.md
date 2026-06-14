@@ -4,7 +4,7 @@ Highly interactive, RTL-aware, bilingual, responsive roadmap visualizer (`roadma
 
 ---
 
-## 🚀 Tech Stack & Design Architecture
+## Tech Stack & Design Architecture
 
 *   **Runtime & Framework:** React 19 + TypeScript + Vite.
 *   **Vector Engine:** `@xyflow/react` (React Flow for graph vector modeling).
@@ -14,7 +14,7 @@ Highly interactive, RTL-aware, bilingual, responsive roadmap visualizer (`roadma
 
 ---
 
-## ✨ Features
+## Features
 
 *   **Bilingual, LTR/RTL Layout (`ar` / `en`):** Support for English and Arabic. Toggling Arabic triggers standard, seamless layout-level RTL shifts on headers and sidebar panels without impacting vertical graph calculations.
 *   **Aesthetic Responsive Design:** Visually optimized for diverse screens ranging from single-canvas 360px mobile grids (as bottom action sheets) to desktop wide panels (sliding drawer models).
@@ -23,7 +23,7 @@ Highly interactive, RTL-aware, bilingual, responsive roadmap visualizer (`roadma
 
 ---
 
-## ⚡ Companion AlgDevs Setup Instructions
+## Companion AlgDevs Setup Instructions
 
 Inside your **AlgDevs repository** (completely separated from this project structure), integrate this isolated, additive hook inside your query search component mount handler (`useEffect`) to support immediate automatic deep-link parsing:
 
@@ -47,7 +47,7 @@ Inserting this low-risk snippet triggers immediate pre-filtered query results wh
 
 ---
 
-## 🛠️ Project Development Commands
+## Project Development Commands
 
 ```bash
 # 1. Install local dependencies
@@ -56,7 +56,7 @@ npm install
 # 2. Launch developer preview server
 npm run dev
 
-# 3. Compile and check code style with linter
+# 3. Check code style with linter
 npm run lint
 
 # 4. Compile optimized standalone production bundle

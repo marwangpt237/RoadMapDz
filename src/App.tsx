@@ -18,7 +18,8 @@ import {
   Terminal,
   Code2,
   ExternalLink,
-  Info
+  Info,
+  Mouse
 } from 'lucide-react';
 
 // Custom lightweight HashRouter hook for 100% iframe & subpath safety
@@ -282,7 +283,7 @@ useEffect(() => {
                   <span>{t('Dashed / Gray = Optional Route', 'متقطع / رمادي = مسار اختياري')}</span>
                 </span>
                 <span className="flex items-center gap-1.5 text-zinc-400">
-                  <span className="text-[9px]">🖱️</span>
+                  <Mouse className="w-3.5 h-3.5 opacity-70" />
                   <span>{t('Scroll to zoom • Drag to pan', 'العجل للتقريب • الإمساك للسحب')}</span>
                 </span>
               </div>
