@@ -29,11 +29,6 @@ function useSimpleRouter() {
     if (hash && hash.startsWith('#/')) {
       return hash.replace('#', '');
     }
-    // Fallback parsing for pathname
-    const path = window.location.pathname;
-    if (path && path !== '/') {
-      return path;
-    }
     return '/';
   });
 
